@@ -4,11 +4,12 @@ import sys
 import logging
 from logging import debug, info
 import argparse
+import lxc
 
 class CommandLineHandler(object):
     def run(self, args):
         ns = self.initialize(args)
-        print ns.rest_args
+        print(ns.rest_args)
         
     def initialize(self, args):
         parser = argparse.ArgumentParser()
