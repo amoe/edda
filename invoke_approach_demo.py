@@ -29,8 +29,13 @@ def sudo_template(c, tmpl, *rest):
     expanded = tmpl.format(*quoted)
     c.sudo(expanded)
 
-try:
+
+def do_all():
     sudo_template(c, "{} init -s {} {} {}", LXC_BINARY_PATH, STORAGE_POOL_NAME, BASE_IMAGE_NAME, CONTAINER_NAME)
+    sudo_template(c, "{} -v start {}", LXC_BINARY_PATH, CONTAINER_NAME)
+
+try:
+    do_all()
 except invoke.exceptions.UnexpectedExit:
     print("Fail")
     sys.exit(1)
