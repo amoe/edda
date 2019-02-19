@@ -75,13 +75,11 @@ except invoke.exceptions.UnexpectedExit:
 # - /1.0/containers/ajs86
 # location: none
 
-
 # Here note that we have config.size.
 
 # Resizing won't work:
 # lxc -v storage volume set main container/demo size 80GB
 # Error: The [size] properties cannot be changed for "lvm" storage volumes
-
 
 # REcommended way is to attach a new storage volume as such.
 
