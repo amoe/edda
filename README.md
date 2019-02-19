@@ -8,6 +8,12 @@ You can find it at [https://github.com/lxc/python3-lxc].
 
 However LXD should also have its own commands, and its own python bindings?
 
+There is also pylxd, see [https://github.com/lxc/pylxd]
+
+## How to install pylxd
+
+    pip3 install pylxd
+
 ## Give user storage capacity
 
 > edda grant-storage dave 20GB
