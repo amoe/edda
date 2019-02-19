@@ -107,3 +107,6 @@ except invoke.exceptions.UnexpectedExit:
 #" By default LXD will make an attached storage volume writable by the container it is attached to. This means it will change the ownership of the storage volume to the container’s id mapping"
 
 #This is all from https://blog.ubuntu.com/2017/07/12/storage-management-in-lxd-2-15
+
+# SOmkething that would be good is a custom configuration that applies to ours 
+# needs.
