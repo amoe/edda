@@ -110,3 +110,16 @@ except invoke.exceptions.UnexpectedExit:
 
 # SOmkething that would be good is a custom configuration that applies to ours 
 # needs.
+
+# You can create a custom storage pool, possibly, using directory, but it's not
+# clear what the various partition schemes are.
+
+
+# run apt update
+
+
+# lxc demo -- apt update
+# lxc demo -- apt install -y openssh-server
+# lxc demo -- systemctl restart ssh
+# echo "root:xyzzy2" | lxc exec demo -- /usr/sbin/chpasswd
+# Now the container is configured
