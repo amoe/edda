@@ -5,14 +5,22 @@ import logging
 from logging import debug, info
 import argparse
 import lxc
+import handlers
+
+command_handlers = {
+    'grant-storage': handlers.GrantStorageHandler()
+}
 
 class CommandLineHandler(object):
     def run(self, args):
         ns = self.initialize(args)
-        print(ns.rest_args)
+        handler = command_handlers[ns.command]
+        handler.run(ns.rest_args)
         
     def initialize(self, args):
         parser = argparse.ArgumentParser()
+
+        parser.add_argument('command', choices=['grant-storage'])
 
         parser.add_argument(
             '--log-level', metavar="LEVEL", type=str, help="Log level",
@@ -27,8 +35,6 @@ class CommandLineHandler(object):
         )
 
         return ns
-
-        
 
 if __name__ == "__main__":
     obj = CommandLineHandler()
