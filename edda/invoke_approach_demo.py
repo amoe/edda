@@ -33,7 +33,29 @@ def sudo_template(c, tmpl, *rest):
 def do_all():
     sudo_template(c, "{} init -s {} {} {}", LXC_BINARY_PATH, STORAGE_POOL_NAME, BASE_IMAGE_NAME, CONTAINER_NAME)
     sudo_template(c, "{} -v start {}", LXC_BINARY_PATH, CONTAINER_NAME)
-    sudo_template(c, "{} -v start {}", LXC_BINARY_PATH, CONTAINER_NAME)
+    sudo_template(c, "{} -v exec {} -- sleep 4", LXC_BINARY_PATH, CONTAINER_NAME)
+    sudo_template(c, "{} -v exec {} -- apt update", LXC_BINARY_PATH, CONTAINER_NAME)
+    sudo_template(c, "{} -v exec {} -- apt install -y openssh-server", LXC_BINARY_PATH, CONTAINER_NAME)
+
+    sudo_template(
+        c,
+        "printf '%s %s\\n' {} {} | {} -v exec {} -- tee -a /etc/ssh/sshd_config",
+        'PermitRootLogin',
+        'yes',
+        LXC_BINARY_PATH,
+        CONTAINER_NAME
+    )
+
+    sudo_template(c, "{} -v exec {} -- systemctl restart ssh", LXC_BINARY_PATH, CONTAINER_NAME)
+
+    sudo_template(
+        c,
+        "printf '%s:%s\\n' {} {} | {} -v exec {} -- /usr/sbin/chpasswd",
+        'root',
+        'xyzzy',
+        LXC_BINARY_PATH,
+        CONTAINER_NAME
+    )
 
 try:
     do_all()
