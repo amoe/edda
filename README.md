@@ -17,8 +17,10 @@ There is also pylxd, see <https://github.com/lxc/pylxd>
 
 > edda grant-storage dave 20GB
 
-This will allocate storage from /data and mount it in the container as
-/mnt/data.
+What will this command do?  It will create a storage volume `dave-extra1` and
+attach it to the container `dave`..  The size limit will be passed to the
+container.  The space will be mounted under /data.  The size limit will only
+work on certain storage pool backends.
 
 ## Target platform
 
