@@ -1,5 +1,9 @@
 # edda
 
+## Secret files
+
+There's a directory called `secret` that is present within gitignore.
+
 ## Requirements
 
 python3-lxc, version 2.0.7+
