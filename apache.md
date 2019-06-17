@@ -14,3 +14,7 @@ avoid doing hacks using the /etc/hosts file.
 
 The downside is that the outer hostname has to be specified in two places, once
 in-container and once outside-of-container.
+
+Bear in mind that timeouts that exist at the perimeter Apache on shl1 will apply,
+so if you want to adjust the timeouts, you may need to adjust them 'all the way
+down' so to speak.
