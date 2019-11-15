@@ -43,7 +43,10 @@ option for untrusted users.
 
 To grant SSH access to a container, the user must first have regular login
 rights to `shl1`.  That can be given by requesting that the user's Sussex
-username is added to the group ` fs-informatics_shl1_group`.
+username is added to the group ` fs-informatics_shl1_group`.  You can check the
+current membership of this group by running this command:
+
+    $ getent group fs-informatics_shl1_group
 
 Once they have logged in to shl1 as a regular user, they will be able to access
 hosts on the LXD bridge.  So all that's required is to find the IP of the
