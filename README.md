@@ -1,31 +1,20 @@
-# edda
+# EDDA Documentation Index
 
-## Secret files
+## Create container
 
-There's a directory called `secret` that is present within gitignore.
+You create a container using an _image_ for the OS.  Please consult the list of
+[available images](https://us.images.linuxcontainers.org/).
 
-## Requirements
+You specify an image using a `DISTRIBUTION/RELEASE/ARCHITECTURE` string, like
+`debian/stretch/amd64`.
 
-python3-lxc, version 2.0.7+
+Here are some examples:
 
-You can find it at <https://github.com/lxc/python3-lxc>.
+    lxc init -s main images:ubuntu/bionic/amd64 mycontainer
+    lxc launch -s main images:debian/stretch/amd64 spiral
 
-However LXD should also have its own commands, and its own python bindings?
-There is also pylxd, see <https://github.com/lxc/pylxd>
+The last argument to the command specifies the name of the container.  `images/`
+is a necessary prefix.
 
-## How to install pylxd
-
-    pip3 install pylxd
-
-## Give user storage capacity
-
-> edda grant-storage dave 20GB
-
-What will this command do?  It will create a storage volume `dave-extra1` and
-attach it to the container `dave`..  The size limit will be passed to the
-container.  The space will be mounted under /data.  The size limit will only
-work on certain storage pool backends.
-
-## Target platform
-
-lxc/lxd version 3.4
+Using `launch` will both create the container and start it.  `init` will just
+create the container.  You can start it later using `lxc start`.
