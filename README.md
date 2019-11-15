@@ -61,3 +61,29 @@ just as in a regular Linux environment).
     sshd_config)
 
 3.  a password has been set for root.
+
+## Exposing HTTP services
+
+You need to modify files in /etc/httpd on shl1 itself.  Look at the existing
+files under /etc/httpd/conf.d for a template.  As of November 2019, a reasonable
+configuration looks like this:
+
+    <VirtualHost aegir.inf.susx.ac.uk:443>
+        ServerName aegir.inf.susx.ac.uk
+        SSLEngine on
+        SSLCertificateFile "/usr/local/share/ssl/edda-multiple-san/certificate.pem"
+        SSLCertificateKeyFile "/usr/local/share/ssl/edda-multiple-san/key.pem"
+        SSLCACertificateFile "/usr/local/share/ssl/edda-multiple-san/root.pem"
+        SSLCertificateChainFile "/usr/local/share/ssl/edda-multiple-san/chain.pem"
+
+
+        ProxyPass "/" "http://10.179.127.20/"
+        ProxyPassReverse "/" "http://10.179.127.20/"
+        ProxyPreserveHost on
+
+        Header always set Strict-Transport-Security "max-age=15768000"
+    </VirtualHost>
+
+You can test your service from the command line by setting the Host header.
+
+    curl -D- -H "Host: eir.inf.susx.ac.uk" http://10.179.127.3/
