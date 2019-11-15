@@ -19,6 +19,8 @@ is a necessary prefix.
 Using `launch` will both create the container and start it.  `init` will just
 create the container.  You can start it later using `lxc start`.
 
+Container names should use kebab case, i.e. `names-like-this`.
+
 ## Entering the container environment
 
 You use `lxc exec` and pass a shell.
