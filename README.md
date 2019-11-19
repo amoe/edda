@@ -12,6 +12,7 @@ Here are some examples:
 
     lxc init -s main images:ubuntu/bionic/amd64 mycontainer
     lxc launch -s main images:debian/stretch/amd64 spiral
+    lxc init -s main images:ubuntu/xenial/amd64 mycontainer2
 
 The last argument to the command specifies the name of the container.  `images/`
 is a necessary prefix.
