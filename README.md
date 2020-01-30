@@ -1,5 +1,9 @@
 # EDDA Documentation Index
 
+## More info on command
+
+Use the --verbose --debug options at the end of your `lxc` command line.
+
 ## Restarting the LXD
 
 snap restart lxd
