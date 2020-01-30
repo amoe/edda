@@ -1,5 +1,19 @@
 # EDDA Documentation Index
 
+## Restarting the LXD
+
+snap restart lxd
+
+This can take up to 5 minutes.  All containers need to be shutdown.  They will
+restart shortly after the daemon has itself restarted.
+
+
+## Force a container to stop
+
+lxc stop mycontainer --force
+
+The order of the options is important.
+
 ## Create container
 
 You create a container using an _image_ for the OS.  Please consult the list of
