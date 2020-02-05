@@ -1,5 +1,29 @@
 # EDDA Documentation Index
 
+## Getting SSL certificates
+
+You can use acme.sh
+
+acme.sh --issue --alpn --standalone -d foo.erwin.org
+
+Port 80 is firewalled off by ITS.  This should actually be changed and replaced
+with 80 -> 443 redirects.
+
+[Thu 30 Jan 13:55:39 GMT 2020] Your cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.cer 
+[Thu 30 Jan 13:55:39 GMT 2020] Your cert key is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.key 
+[Thu 30 Jan 13:55:39 GMT 2020] The intermediate CA cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/ca.cer 
+[Thu 30 Jan 13:55:39 GMT 2020] And the full chain certs is there:  /root/.acme.sh/archive.reanimatingdata.co.uk/fullchain.cer 
+
+
+
+Put certs in /usr/local/share/ssl/subdir.
+
+    SSLEngine on
+    SSLCertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/certificate.pem"
+    SSLCertificateKeyFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/key.pem"
+    SSLCACertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/root.pem"
+    SSLCertificateChainFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/chain.pem"
+
 ## More info on command
 
 Use the --verbose --debug options at the end of your `lxc` command line.
