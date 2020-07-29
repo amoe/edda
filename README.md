@@ -1,47 +1,5 @@
 # EDDA Documentation Index
 
-## Getting SSL certificates
-
-You can use acme.sh
-
-acme.sh --issue --alpn --standalone -d foo.erwin.org
-
-Port 80 is firewalled off by ITS.  This should actually be changed and replaced
-with 80 -> 443 redirects.
-
-[Thu 30 Jan 13:55:39 GMT 2020] Your cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.cer 
-[Thu 30 Jan 13:55:39 GMT 2020] Your cert key is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.key 
-[Thu 30 Jan 13:55:39 GMT 2020] The intermediate CA cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/ca.cer 
-[Thu 30 Jan 13:55:39 GMT 2020] And the full chain certs is there:  /root/.acme.sh/archive.reanimatingdata.co.uk/fullchain.cer 
-
-
-
-Put certs in /usr/local/share/ssl/subdir.
-
-    SSLEngine on
-    SSLCertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/certificate.pem"
-    SSLCertificateKeyFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/key.pem"
-    SSLCACertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/root.pem"
-    SSLCertificateChainFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/chain.pem"
-
-## More info on command
-
-Use the --verbose --debug options at the end of your `lxc` command line.
-
-## Restarting the LXD
-
-snap restart lxd
-
-This can take up to 5 minutes.  All containers need to be shutdown.  They will
-restart shortly after the daemon has itself restarted.
-
-
-## Force a container to stop
-
-lxc stop mycontainer --force
-
-The order of the options is important.
-
 ## Create container
 
 You create a container using an _image_ for the OS.  Please consult the list of
@@ -53,7 +11,7 @@ You specify an image using a `DISTRIBUTION/RELEASE/ARCHITECTURE` string, like
 Here are some examples:
 
     lxc init -s main images:ubuntu/bionic/amd64 mycontainer
-    lxc launch -s main images:debian/stretch/amd64 spiral
+    lxc launch -s main images:debian/buster/amd64 spiral
     lxc init -s main images:ubuntu/xenial/amd64 mycontainer2
 
 The last argument to the command specifies the name of the container.  `images/`
@@ -76,6 +34,24 @@ There's no standard way to configure containers.  You can do them yourself by
 hand, or use a configuration management tool like Puppet or Ansible.
 Alternatively, if the container should be managed by another user, you can grant
 the user SSH access directly.
+
+
+## More info on command
+
+Use the --verbose --debug options at the end of your `lxc` command line.
+
+## Restarting the LXD
+
+ snap restart lxd
+
+This can take up to 5 minutes.  All containers need to be shutdown.  They will
+restart shortly after the daemon has itself restarted.
+
+## Force a container to stop
+
+lxc stop mycontainer --force
+
+The order of the options is important.
 
 ## Granting SSH access to a user
 
@@ -123,13 +99,63 @@ configuration looks like this:
         SSLCertificateChainFile "/usr/local/share/ssl/edda-multiple-san/chain.pem"
 
 
-        ProxyPass "/" "http://10.179.127.20/"
-        ProxyPassReverse "/" "http://10.179.127.20/"
+        ProxyPass "/" "http://10.179.127.20:80/" retry=0
+        ProxyPassReverse "/" "http://10.179.127.20:80/"
         ProxyPreserveHost on
 
         Header always set Strict-Transport-Security "max-age=15768000"
     </VirtualHost>
 
+In this case the in-container service is exposed on port 80 of the container.
+
 You can test your service from the command line by setting the Host header.
 
     curl -D- -H "Host: eir.inf.susx.ac.uk" http://10.179.127.3/
+
+
+## Getting SSL certificates
+
+You can use acme.sh
+
+acme.sh --issue --alpn --standalone -d foo.erwin.org
+
+Port 80 is firewalled off by ITS.  This should actually be changed and replaced
+with 80 -> 443 redirects.
+
+[Thu 30 Jan 13:55:39 GMT 2020] Your cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.cer 
+[Thu 30 Jan 13:55:39 GMT 2020] Your cert key is in  /root/.acme.sh/archive.reanimatingdata.co.uk/archive.reanimatingdata.co.uk.key 
+[Thu 30 Jan 13:55:39 GMT 2020] The intermediate CA cert is in  /root/.acme.sh/archive.reanimatingdata.co.uk/ca.cer 
+[Thu 30 Jan 13:55:39 GMT 2020] And the full chain certs is there:  /root/.acme.sh/archive.reanimatingdata.co.uk/fullchain.cer 
+
+
+
+Put certs in /usr/local/share/ssl/subdir.
+
+    SSLEngine on
+    SSLCertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/certificate.pem"
+    SSLCertificateKeyFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/key.pem"
+    SSLCACertificateFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/root.pem"
+    SSLCertificateChainFile "/usr/local/share/ssl/archive.reanimatingdata.co.uk/chain.pem"
+
+## Check group memberships
+
+The relevant group for access to the shl1 server is the below.
+
+    -bash-4.2$ getent group fs-informatics_shl1_group
+
+Requests for access currently have to go through paulk.
+
+
+## Set up SSH key for a user
+
+The .ssh directory file needs to exist, which normally lives under
+`/its/home/<username>`
+
+    mkdir /its/home/ca296/.ssh
+    chmod 0700 /its/home/ca296/.ssh
+    cat > /its/home/ca296/.ssh/authorized_keys
+    foo
+    ^D
+    chmod 0600 /its/home/ca296/.ssh/authorized_keys
+    chown -R ca296:ca296_g /its/home/ca296/.ssh
+
