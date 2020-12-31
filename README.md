@@ -159,3 +159,11 @@ The .ssh directory file needs to exist, which normally lives under
     chmod 0600 /its/home/ca296/.ssh/authorized_keys
     chown -R ca296:ca296_g /its/home/ca296/.ssh
 
+
+## lxc list is slow?
+
+Try to use `lxc list --fast` instead.
+
+## Add extra storage / disk space for a user's container
+
+See the instructions [here](add_storage.md).
