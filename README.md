@@ -67,6 +67,12 @@ current membership of this group by running this command:
 
     $ getent group fs-informatics_shl1_group
 
+In addition to this, as of 2020, they must also have an SSH key set up under
+`authorized_keys`, and more-than-likely must have this private key set up and
+available within `unix.uscs.susx.ac.uk`.  See the section below "Set up SSH key
+for a user".  It's really difficult to put a user-friendly face on this part
+while still preserving all security properties.
+
 Once they have logged in to shl1 as a regular user, they will be able to access
 hosts on the LXD bridge.  So all that's required is to find the IP of the
 relevant container (which is shown using the `lxc list` command), and ssh into
@@ -74,7 +80,7 @@ that container:
 
      ssh root@10.179.127.60
 
-Note that this requires two things:
+Note that this requires three things to be true:
 
 1.  sshd is running inside the container (you will have to install it yourself,
 just as in a regular Linux environment).
@@ -111,6 +117,11 @@ In this case the in-container service is exposed on port 80 of the container.
 You can test your service from the command line by setting the Host header.
 
     curl -D- -H "Host: eir.inf.susx.ac.uk" http://10.179.127.3/
+
+This is assuming that the HTTP service responds as the default host on the
+container IP.  If the container ITSELF uses name-based virtual hosting, you're
+not in a great situation.  The easiest route out of your situation is to set up
+an entry in `/etc/hosts` on shl1 itself, to make the host resolvable.
 
 
 ## Getting SSL certificates
